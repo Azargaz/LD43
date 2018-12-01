@@ -61,9 +61,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\LevelGenerator.cs" />
     <Compile Include="Assets\Scripts\ColorToPrefab.cs" />
     <Compile Include="Assets\Scripts\Controller2D.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\MoveableBlockController.cs" />
     <Compile Include="Assets\Scripts\MovementController.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Hubert/A/Git/LD43/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

@@ -20,6 +20,8 @@ public class MovementController : MonoBehaviour
     Animator anim;
     SpriteRenderer sprite;
 
+    bool stop = false;
+
     void Start()
     {
         controller = GetComponent<Controller2D>();
@@ -38,6 +40,9 @@ public class MovementController : MonoBehaviour
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
+        if(stop)
+            input = Vector2.zero;
+
         if (input.y > 0 && controller.collisions.below)
         {
             velocity.y = jumpVelocity;
@@ -51,5 +56,10 @@ public class MovementController : MonoBehaviour
         velocity.x = Mathf.SmoothDamp(velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    void OnMouseDown()
+    {
+        stop = !stop;
     }
 }

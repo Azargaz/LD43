@@ -61,4 +61,10 @@ MonoBehaviour:
     prefab: {fileID: 1367894972545594, guid: fa00ab7a7d372ed4ca5abf498e47a57d, type: 2}
   - color: {r: 0, g: 1, b: 0, a: 1}
     prefab: {fileID: 1024341504559192, guid: be6e216dfecbbcf4da04730a0b6be731, type: 2}
+  - color: {r: 1, g: 0, b: 1, a: 1}
+    prefab: {fileID: 1323580424554270, guid: 11017dab0055b654ebc082b9941b95a8, type: 2}
+  - color: {r: 1, g: 0, b: 0, a: 1}
+    prefab: {fileID: 1472449159576198, guid: 4a9ea0796de96b0408f139e2ed26103f, type: 2}
+  - color: {r: 0, g: 0, b: 0, a: 0}
+    prefab: {fileID: 1960755635321086, guid: dd532ba32f5217441afea5baff1184e3, type: 2}
   cameraTransform: {fileID: 0}

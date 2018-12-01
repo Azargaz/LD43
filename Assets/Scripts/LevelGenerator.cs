@@ -26,10 +26,7 @@ public class LevelGenerator : MonoBehaviour
 			for (int y = 0; y < map.height; y++)
 			{
 				Color pixelColor = map.GetPixel(x, y);
-				if(pixelColor.a != 0)
-				{					
-					GenerateTile(x, y, pixelColor, offset);
-				}
+				GenerateTile(x, y, pixelColor, offset);
 			}
 		}
 	}
