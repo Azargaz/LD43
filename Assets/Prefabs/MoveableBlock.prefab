@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
-    m_Bits: 768
+    m_Bits: 1792
   horizontalRayCount: 4
   verticalRayCount: 4
 --- !u!114 &114949266258389270
@@ -116,9 +116,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d6d541c27566a46877b95e94e767ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  gravity: -12
-  movingRange: 0.3
+  moveSpeed: 4
+  gravity: -15
+  movingRange: 0.25
   input: {x: 0, y: 0}
 --- !u!212 &212430662005606120
 SpriteRenderer:

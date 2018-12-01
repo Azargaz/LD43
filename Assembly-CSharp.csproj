@@ -64,8 +64,17 @@
     <Compile Include="Assets\Scripts\ColorToPrefab.cs" />
     <Compile Include="Assets\Scripts\Controller2D.cs" />
     <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\Mechanism.cs" />
+    <Compile Include="Assets\Scripts\MechanismController.cs" />
     <Compile Include="Assets\Scripts\MoveableBlockController.cs" />
     <Compile Include="Assets\Scripts\MovementController.cs" />
+    <Compile Include="Assets\Scripts\PlateController.cs" />
+    <Compile Include="Assets\Scripts\PressurePlate.cs" />
+    <Compile Include="Assets\Scripts\SacrificeController.cs" />
+    <Compile Include="Assets\Scripts\Sacrificer.cs" />
+    <Compile Include="Assets\Scripts\SkeletonController.cs" />
+    <Compile Include="Assets\Scripts\SpawnPlayer.cs" />
+    <Compile Include="Assets\Scripts\Tile.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Hubert/A/Git/LD43/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

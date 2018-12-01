@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Controller2D))]
 public class MovementController : MonoBehaviour
 {
+	public float maxJumpHeight = 4;
+    public float minJumpHeight = 1;
     public float jumpHeight = 4;
     public float timeToJumpApex = .4f;
     float accelerationTimeAirborne = .2f;
@@ -12,7 +14,8 @@ public class MovementController : MonoBehaviour
     public float moveSpeed = 6;
 
     float gravity;
-    float jumpVelocity;
+	float maxJumpVelocity;
+    float minJumpVelocity;
     Vector3 velocity;
     float velocityXSmoothing;
 
@@ -20,7 +23,7 @@ public class MovementController : MonoBehaviour
     Animator anim;
     SpriteRenderer sprite;
 
-    bool stop = false;
+    public bool stop = false;
 
     void Start()
     {
@@ -28,7 +31,8 @@ public class MovementController : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         gravity = -(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        minJumpVelocity = Mathf.Sqrt (2 * Mathf.Abs (gravity) * minJumpHeight);
     }
 
     void Update()
@@ -43,12 +47,28 @@ public class MovementController : MonoBehaviour
         if(stop)
             input = Vector2.zero;
 
-        if (input.y > 0 && controller.collisions.below)
+        if(!stop)
         {
-            velocity.y = jumpVelocity;
+            if(Input.GetButtonDown("Jump"))
+            {            
+                if (controller.collisions.below)
+                {
+                    anim.SetTrigger("jump");
+                    velocity.y = maxJumpVelocity;
+                }
+            }
+
+            if (Input.GetButtonUp("Jump"))
+            {
+                if (velocity.y > minJumpVelocity) 
+                {
+                    velocity.y = minJumpVelocity;
+                }
+            }
         }
 
         anim.SetFloat("walk", Mathf.Abs(input.x));
+        anim.SetFloat("Yvelocity", velocity.y);
         anim.SetBool("grounded", controller.collisions.below);
         sprite.flipX = input.x == 0 ? sprite.flipX : input.x < 0;
 
