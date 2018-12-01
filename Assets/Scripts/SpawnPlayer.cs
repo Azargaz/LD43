@@ -16,7 +16,7 @@ public class SpawnPlayer : MonoBehaviour
 	{
 		for (int i = 0; i < startingNumberOfSkeletons; i++)
 		{
-			Instantiate(playerPrefab, transform.position + new Vector3(i/4.0f, 0, 0), Quaternion.identity);
+			Instantiate(playerPrefab, transform.position + new Vector3(i * 0.3f, 0, 0), Quaternion.identity);
 		}
 	}
 }

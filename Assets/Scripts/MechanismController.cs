@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MechanismController : MonoBehaviour {
+public class MechanismController : MonoBehaviour 
+{
+	public List<Mechanism> mechanisms = new List<Mechanism>();
 
-	// Use this for initialization
-	void Start () {
-		
+	public virtual void Activate()
+	{
+		foreach(Mechanism mechanism in mechanisms)
+		{
+			mechanism.Activate();
+		}
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public virtual void Deactivate()
+	{
+		foreach(Mechanism mechanism in mechanisms)
+		{
+			mechanism.Deactivate();
+		}
 	}
+
 }

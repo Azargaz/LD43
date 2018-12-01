@@ -14,7 +14,8 @@ public class SkeletonController : MonoBehaviour
 
 	void Start () 
 	{
-		animator = GetComponent<Animator>();		
+		animator = GetComponent<Animator>();
+		controller = GetComponent<MovementController>();		
 	}
 
 	public void Kill()

@@ -3,21 +3,21 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public Transform cameraTransform;
     public Texture2D[] maps;
     public ColorToPrefab[] colorMappings;
 
-    public Transform cameraTransform;
-
-    public List<MechanismColors> mechanismsWithColors = new List<MechanismColors>();
+    List<MechanismColors> mechanismsWithColors = new List<MechanismColors>();
     public class MechanismColors
     {
         public Color color;
         public List<GameObject> mechanisms = new List<GameObject>();
+        public HashSet<Vector2> postions = new HashSet<Vector2>();
     }
 
     void Start()
     {
-        cameraTransform.position = new Vector3(Mathf.FloorToInt(maps[0].width / 2), Mathf.FloorToInt(maps[0].height / 2), -15);
+        cameraTransform.position = new Vector3(Mathf.FloorToInt(maps[0].width / 2), Mathf.FloorToInt(maps[0].height / 4), -15);
 
         Vector2 offset = Vector2.zero;
         foreach (Texture2D map in maps)
@@ -25,20 +25,26 @@ public class LevelGenerator : MonoBehaviour
             GenerateLevel(map, offset);
             offset += new Vector2(0, map.height);
         }
+
+        SetupMechanisms();
+        mechanismsWithColors.Clear();
     }
 
     void GenerateLevel(Texture2D map, Vector2 offset)
     {
-        for (int x = map.width / 2 + 1; x < map.width; x++)
+        for (int x = 0; x < map.width; x++)
         {
-            for (int y = map.height / 2 + 1; y < map.height; y++)
+            for (int y = map.height / 2; y < map.height; y++)
             {
                 Color pixelColor = map.GetPixel(x, y);
-                GenerateMechanism(x, y, pixelColor);
+                if(pixelColor.a != 0)
+                {
+                    GenerateMechanismColors(x, y - map.height/2, pixelColor);
+                }
             }
         }
-
-        for (int x = 0; x < map.width / 2; x++)
+        
+        for (int x = 0; x < map.width; x++)
         {
             for (int y = 0; y < map.height / 2; y++)
             {
@@ -56,12 +62,12 @@ public class LevelGenerator : MonoBehaviour
             {
                 Vector2 position = new Vector2(x, y) + offset;
                 GameObject spawnedPrefab = Instantiate(colorMapping.prefab, position, Quaternion.identity, transform);
-				AddMechanism(pixelColor, spawnedPrefab);
+				AddMechanism(x, y, spawnedPrefab);
             }
         }
     }
 
-    void GenerateMechanism(int x, int y, Color pixelColor)
+    void GenerateMechanismColors(int x, int y, Color pixelColor)
     {
         if (!mechanismsWithColors.Exists(element => element.color == pixelColor))
 		{
@@ -69,37 +75,55 @@ public class LevelGenerator : MonoBehaviour
 			{
 				color = pixelColor
 			};
+            mechanismWithColor.postions.Add(new Vector2(x, y));
 			mechanismsWithColors.Add(mechanismWithColor);
 		}
+        else
+        {
+            foreach(MechanismColors mechColor in mechanismsWithColors)
+            {
+                if(mechColor.color == pixelColor)
+                {                    
+                    mechColor.postions.Add(new Vector2(x, y));
+                }
+            }
+        }
     }
 
-	void AddMechanism(Color pixelColor, GameObject mechanism)
+	void AddMechanism(int x, int y, GameObject mechanism)
 	{
 		foreach(MechanismColors mech in mechanismsWithColors)
 		{
-			if(mech.color == pixelColor)
+			if(mech.postions.Contains(new Vector2(x, y)))
 			{
 				mech.mechanisms.Add(mechanism);
 			}
 		}
 	}
 
-    void CreateMechanisms()
+    void SetupMechanisms()
     {
         foreach (MechanismColors mechColors in mechanismsWithColors)
         {
+            List<Mechanism> mechanisms = new List<Mechanism>();
+
+            foreach (GameObject mech in mechColors.mechanisms)
+            {
+                Mechanism mechanism = mech.GetComponent<Mechanism>();
+                
+                if(mechanism != null)
+                {
+                    mechanisms.Add(mechanism);
+                }
+            }
+
             foreach (GameObject mech in mechColors.mechanisms)
             {
                 MechanismController controller = mech.GetComponent<MechanismController>();
-                Mechanism mechanism = mech.GetComponent<Mechanism>();
 
                 if(controller != null)
                 {
-                    // add each mechanism to this controller
-                }
-                else if(mechanism != null)
-                {
-                    // ???
+                    controller.mechanisms.AddRange(mechanisms);
                 }
             }
         }
