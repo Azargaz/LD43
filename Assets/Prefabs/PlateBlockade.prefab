@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212173070409714318}
   - component: {fileID: 61197785267789934}
   - component: {fileID: 114923975301248004}
+  - component: {fileID: 95231813349569236}
   m_Layer: 9
   m_Name: PlateBlockade
   m_TagString: Untagged
@@ -65,8 +66,26 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 1}
+  m_Size: {x: 0.7, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &95231813349569236
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1168351550736118}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 09c97a8526ea96b4b9227eac3a94c0fe, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114923975301248004
 MonoBehaviour:
   m_ObjectHideFlags: 1

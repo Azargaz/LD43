@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SacrificerController : MechanismController
 {
 	public int sacrificesNeeded = 1;
 	int sacrificesOffered = 0;
 	
+	public Text counter;
+	Animator animator;
+
 	int SacrificesOffered
 	{
 		get
@@ -17,8 +21,21 @@ public class SacrificerController : MechanismController
 		{
 			sacrificesOffered = value;
 			if(sacrificesOffered >= sacrificesNeeded)
+			{
 				Activate();	
+				animator.SetTrigger("activated");
+			}
 		}
+	}
+
+	void Start()
+	{
+		animator = GetComponent<Animator>();
+	}
+
+	void Update()
+	{
+		counter.text = (sacrificesNeeded - sacrificesOffered).ToString();
 	}
 
     void OnTriggerStay2D(Collider2D other)
@@ -30,7 +47,7 @@ public class SacrificerController : MechanismController
 				if(sacrificesNeeded > SacrificesOffered)
 				{
 					SkeletonController skeleton = other.gameObject.GetComponent<SkeletonController>();
-					skeleton.Kill();
+					skeleton.Sacrifice();
 					SacrificesOffered++;
 				}
 			}

@@ -15,11 +15,11 @@ public class PressurePlateMechanism : Mechanism
 	
 	void PressurePlateActivated()
 	{
-		gameObject.SetActive(false);
+		animator.SetTrigger("hide");
 	}
 
 	void PressurePlateDeactivated()
 	{
-		gameObject.SetActive(true);
+		animator.SetTrigger("unhide");
 	}
 }

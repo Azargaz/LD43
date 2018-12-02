@@ -67,6 +67,7 @@ public class MovementController : MonoBehaviour
             }
         }
 
+        anim.SetBool("pushing", Input.GetButton("Fire1"));
         anim.SetFloat("walk", Mathf.Abs(input.x));
         anim.SetFloat("Yvelocity", velocity.y);
         anim.SetBool("grounded", controller.collisions.below);

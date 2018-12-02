@@ -4,19 +4,16 @@ using UnityEngine;
 
 public class SacrificerMechanism : Mechanism
 {
+    Animator animator;
+
     void Start()
     {
+        animator = GetComponent<Animator>();
 		uponActivation += SacrificerActivated;
-		uponDeactivation += SacrificerDeactivated;
     }
 
     void SacrificerActivated()
     {
-        gameObject.SetActive(false);
-    }
-
-    void SacrificerDeactivated()
-    {
-        gameObject.SetActive(true);
+        animator.SetTrigger("activate");
     }
 }

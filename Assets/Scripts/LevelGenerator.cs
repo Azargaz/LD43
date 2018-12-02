@@ -30,6 +30,14 @@ public class LevelGenerator : MonoBehaviour
         mechanismsWithColors.Clear();
     }
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        }
+    }
+
     void GenerateLevel(Texture2D map, Vector2 offset)
     {
         for (int x = 0; x < map.width; x++)
@@ -37,13 +45,13 @@ public class LevelGenerator : MonoBehaviour
             for (int y = map.height / 2; y < map.height; y++)
             {
                 Color pixelColor = map.GetPixel(x, y);
-                if(pixelColor.a != 0)
+                if (pixelColor.a != 0)
                 {
-                    GenerateMechanismColors(x, y - map.height/2, pixelColor);
+                    GenerateMechanismColors(x, y - map.height / 2, pixelColor);
                 }
             }
         }
-        
+
         for (int x = 0; x < map.width; x++)
         {
             for (int y = 0; y < map.height / 2; y++)
@@ -62,7 +70,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 Vector2 position = new Vector2(x, y) + offset;
                 GameObject spawnedPrefab = Instantiate(colorMapping.prefab, position, Quaternion.identity, transform);
-				AddMechanism(x, y, spawnedPrefab);
+                AddMechanism(x, y, spawnedPrefab);
             }
         }
     }
@@ -70,36 +78,36 @@ public class LevelGenerator : MonoBehaviour
     void GenerateMechanismColors(int x, int y, Color pixelColor)
     {
         if (!mechanismsWithColors.Exists(element => element.color == pixelColor))
-		{
-			MechanismColors mechanismWithColor = new MechanismColors()
-			{
-				color = pixelColor
-			};
+        {
+            MechanismColors mechanismWithColor = new MechanismColors()
+            {
+                color = pixelColor
+            };
             mechanismWithColor.postions.Add(new Vector2(x, y));
-			mechanismsWithColors.Add(mechanismWithColor);
-		}
+            mechanismsWithColors.Add(mechanismWithColor);
+        }
         else
         {
-            foreach(MechanismColors mechColor in mechanismsWithColors)
+            foreach (MechanismColors mechColor in mechanismsWithColors)
             {
-                if(mechColor.color == pixelColor)
-                {                    
+                if (mechColor.color == pixelColor)
+                {
                     mechColor.postions.Add(new Vector2(x, y));
                 }
             }
         }
     }
 
-	void AddMechanism(int x, int y, GameObject mechanism)
-	{
-		foreach(MechanismColors mech in mechanismsWithColors)
-		{
-			if(mech.postions.Contains(new Vector2(x, y)))
-			{
-				mech.mechanisms.Add(mechanism);
-			}
-		}
-	}
+    void AddMechanism(int x, int y, GameObject mechanism)
+    {
+        foreach (MechanismColors mech in mechanismsWithColors)
+        {
+            if (mech.postions.Contains(new Vector2(x, y)))
+            {
+                mech.mechanisms.Add(mechanism);
+            }
+        }
+    }
 
     void SetupMechanisms()
     {
@@ -110,8 +118,8 @@ public class LevelGenerator : MonoBehaviour
             foreach (GameObject mech in mechColors.mechanisms)
             {
                 Mechanism mechanism = mech.GetComponent<Mechanism>();
-                
-                if(mechanism != null)
+
+                if (mechanism != null)
                 {
                     mechanisms.Add(mechanism);
                 }
@@ -121,7 +129,7 @@ public class LevelGenerator : MonoBehaviour
             {
                 MechanismController controller = mech.GetComponent<MechanismController>();
 
-                if(controller != null)
+                if (controller != null)
                 {
                     controller.mechanisms.AddRange(mechanisms);
                 }

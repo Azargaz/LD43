@@ -24,6 +24,17 @@ public class SkeletonController : MonoBehaviour
 		animator.SetTrigger("death");		
 	}
 
+	public void Sacrifice()
+	{
+		controller.stop = true;
+		animator.SetTrigger("sacrifice");
+	}
+
+	void AnimSacrifice()
+	{		
+		Destroy(gameObject);
+	}
+
 	void AnimKill()
 	{
 		Instantiate(afterDeathPrefab, transform.position + new Vector3(0, 0.05f, 0), Quaternion.identity);
