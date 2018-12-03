@@ -1,10 +1,27 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public bool tutorial = false;
+    public GameObject tutorialHelp;
+
+    [System.Serializable]
+    public class Level
+    {
+        public string name;
+        public int numberOfStartingSkeletons;
+        public int sacrificesNeeded;
+        public Texture2D map;
+    }
+
+    public Level[] levels;
+    public static int currentLevelIndex = 0;
+    public static Level currentLevel;
+    static int maxLevel;
+
     public Transform cameraTransform;
-    public Texture2D[] maps;
     public ColorToPrefab[] colorMappings;
 
     List<MechanismColors> mechanismsWithColors = new List<MechanismColors>();
@@ -15,26 +32,34 @@ public class LevelGenerator : MonoBehaviour
         public HashSet<Vector2> postions = new HashSet<Vector2>();
     }
 
-    void Start()
+    void Awake()
     {
-        cameraTransform.position = new Vector3(Mathf.FloorToInt(maps[0].width / 2), Mathf.FloorToInt(maps[0].height / 4), -15);
+        maxLevel = levels.Length-1;
+        currentLevelIndex = PlayerPrefs.GetInt("LastLevel");
+        currentLevel = levels[currentLevelIndex];
+        cameraTransform.position = new Vector3(Mathf.FloorToInt(currentLevel.map.width / 2), Mathf.FloorToInt(currentLevel.map.height / 4), -15);
 
-        Vector2 offset = Vector2.zero;
-        foreach (Texture2D map in maps)
-        {
-            GenerateLevel(map, offset);
-            offset += new Vector2(0, map.height);
-        }
+        GenerateLevel(currentLevel.map, Vector2.zero);
 
         SetupMechanisms();
         mechanismsWithColors.Clear();
+
+        PlayerPrefs.SetInt("LastLevel", currentLevelIndex);
+
+        tutorial = currentLevelIndex == 0;
+        tutorialHelp.SetActive(tutorial);
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {            
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -135,5 +160,26 @@ public class LevelGenerator : MonoBehaviour
                 }
             }
         }
+    }
+
+    public static bool NextLevel()
+    {
+        if(currentLevelIndex < maxLevel)
+        {
+            currentLevelIndex++;
+            PlayerPrefs.SetInt("LastLevel", currentLevelIndex);
+            SetLastLevelUnlocked(currentLevelIndex);
+            return true;
+        }
+
+        PlayerPrefs.SetInt("LastLevel", currentLevelIndex);
+        SetLastLevelUnlocked(currentLevelIndex);
+        return false;
+    }
+
+    static void SetLastLevelUnlocked(int i)
+    {
+        if(i > PlayerPrefs.GetInt("LastLevelUnlocked"))
+            PlayerPrefs.SetInt("LastLevelUnlocked", i);
     }
 }

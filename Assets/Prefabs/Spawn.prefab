@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28098d40d0e38d540b44eebb9e7acf6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingNumberOfSkeletons: 2
+  amountToSpawn: 3
   playerPrefab: {fileID: 1024341504559192, guid: be6e216dfecbbcf4da04730a0b6be731,
     type: 2}
 --- !u!212 &212561182440771624

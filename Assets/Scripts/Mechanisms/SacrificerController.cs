@@ -11,6 +11,8 @@ public class SacrificerController : MechanismController
 	public Text counter;
 	Animator animator;
 
+	List<SkeletonController> skeletonsInRange = new List<SkeletonController>();
+	
 	int SacrificesOffered
 	{
 		get
@@ -31,26 +33,46 @@ public class SacrificerController : MechanismController
 	void Start()
 	{
 		animator = GetComponent<Animator>();
+		sacrificesNeeded = LevelGenerator.currentLevel.sacrificesNeeded;
 	}
 
 	void Update()
 	{
 		counter.text = (sacrificesNeeded - sacrificesOffered).ToString();
+
+		if(Input.GetButtonDown("Sacrifice"))
+		{
+			while(skeletonsInRange.Count > 0 && sacrificesNeeded > sacrificesOffered)
+				Sacrifice();
+		}
 	}
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
 		if(other.gameObject.layer == 8)
 		{
-			if(Input.GetButtonDown("Sacrifice"))
-			{
-				if(sacrificesNeeded > SacrificesOffered)
-				{
-					SkeletonController skeleton = other.gameObject.GetComponent<SkeletonController>();
-					skeleton.Sacrifice();
-					SacrificesOffered++;
-				}
-			}
+			skeletonsInRange.Add(other.gameObject.GetComponent<SkeletonController>());
 		}
     }
+
+	void OnTriggerExit2D(Collider2D other)
+	{
+		if(other.gameObject.layer == 8)
+		{
+			skeletonsInRange.Remove(other.gameObject.GetComponent<SkeletonController>());
+		}
+	}
+
+	void Sacrifice()
+	{
+		if(skeletonsInRange.Count == 0)
+			return;
+
+		if(sacrificesNeeded > SacrificesOffered)
+		{
+			skeletonsInRange[0].Sacrifice();
+			skeletonsInRange.RemoveAt(0);
+			SacrificesOffered++;
+		}
+	}
 }

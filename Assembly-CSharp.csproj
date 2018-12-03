@@ -55,7 +55,11 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\ColorToPrefab.cs" />
      <Compile Include="Assets\Scripts\Controller2D.cs" />
+     <Compile Include="Assets\Scripts\End.cs" />
+     <Compile Include="Assets\Scripts\ExitController.cs" />
+     <Compile Include="Assets\Scripts\GameMenu.cs" />
      <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+     <Compile Include="Assets\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Scripts\Mechanisms\Mechanism.cs" />
      <Compile Include="Assets\Scripts\Mechanisms\MechanismController.cs" />
      <Compile Include="Assets\Scripts\Mechanisms\PressurePlateController.cs" />
@@ -66,6 +70,7 @@
      <Compile Include="Assets\Scripts\MovementController.cs" />
      <Compile Include="Assets\Scripts\SkeletonController.cs" />
      <Compile Include="Assets\Scripts\SpawnPlayer.cs" />
+     <Compile Include="Assets\Scripts\SpawnSkeletons.cs" />
  <Reference Include="Unity.2D.PixelPerfect.Editor">
  <HintPath>C:/Users/Hubert/A/Git/LD43/Library/ScriptAssemblies/Unity.2D.PixelPerfect.Editor.dll</HintPath>
  </Reference>

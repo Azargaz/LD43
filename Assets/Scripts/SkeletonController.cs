@@ -1,57 +1,112 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SkeletonController : MonoBehaviour 
+public class SkeletonController : MonoBehaviour
 {
-	Animator animator;
+    Animator animator;
+    AudioSource audioSource;
 
-	public GameObject stopSign;
-	bool stopSignActive = false;
-	public GameObject afterDeathPrefab;
+    public AudioClips[] clips;
+    [System.Serializable]
+    public class AudioClips
+    {
+        public string name;
+        public AudioClip clip;
+    }
+    Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>(); 
 
-	MovementController controller;
+    public GameObject stopSign;
+    bool stopSignActive = false;
+    bool alive = true;
+    public GameObject afterDeathPrefab;
 
-	void Start () 
-	{
-		animator = GetComponent<Animator>();
-		controller = GetComponent<MovementController>();		
-	}
+    public static List<SkeletonController> skeletonsList = new List<SkeletonController>();
 
-	public void Kill()
-	{
-		controller.stop = true;
-		animator.SetTrigger("death");		
-	}
+    [HideInInspector]
+    public MovementController controller;
 
-	public void Sacrifice()
-	{
-		controller.stop = true;
-		animator.SetTrigger("sacrifice");
-	}
+    public Text id;
 
-	void AnimSacrifice()
-	{		
-		Destroy(gameObject);
-	}
+    static bool audioIsPlaying;
 
-	void AnimKill()
-	{
-		Instantiate(afterDeathPrefab, transform.position + new Vector3(0, 0.05f, 0), Quaternion.identity);
-		Destroy(gameObject);
-	}
+    void Awake()
+    {
+        skeletonsList.Clear();
 
-	void OnCollisionEnter2D(Collision2D other) 
-	{
-		if(other.gameObject.layer == 10)
-		{
-			Kill();
-		}
-	}
+        for (int i = 0; i < clips.Length; i++)
+        {
+            audioClips.Add(clips[i].name, clips[i].clip);
+        }
+    }
 
-	void OnMouseDown() 
-	{
-		stopSignActive = !stopSignActive;
-		stopSign.SetActive(stopSignActive);
-	}
+    void Start()
+    {
+        skeletonsList.Add(this);
+        animator = GetComponent<Animator>();
+        controller = GetComponent<MovementController>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    void Update()
+    {
+        if (alive)
+        {
+            id.text = (skeletonsList.IndexOf(this)+1).ToString();
+            stopSignActive = controller.stop;
+            stopSign.SetActive(stopSignActive);
+
+            audioIsPlaying = audioSource.isPlaying;
+        }
+    }
+
+    public void Kill()
+    {
+        PlayAudio("death");
+		Death();
+        animator.SetTrigger("death");
+    }
+
+    void Death()
+    {
+        alive = false;
+        controller.stop = true;
+		skeletonsList.Remove(this);
+    }
+
+    public void Sacrifice()
+    {
+        PlayAudio("sacrifice");
+		Death();
+        animator.SetTrigger("sacrifice");
+    }
+
+    void AnimSacrifice()
+    {
+        Destroy(gameObject);
+    }
+
+    void AnimKill()
+    {
+        Instantiate(afterDeathPrefab, transform.position + new Vector3(0, 0.05f, 0), Quaternion.identity);
+        Destroy(gameObject);
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.layer == 10)
+        {
+            Kill();
+        }
+    }
+
+    public void PlayAudio(string name)
+    {
+        if(audioIsPlaying)
+            return;
+        audioSource.clip = audioClips[name];
+        audioSource.Play();
+        audioIsPlaying = audioSource.isPlaying;
+    }
 }
